@@ -1,4 +1,4 @@
-package com.acsoft.saveplacesxml.feature_places.presentation
+package com.acsoft.saveplacesxml.feature_places.presentation.places
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.acsoft.saveplacesxml.R
 import com.acsoft.saveplacesxml.databinding.FragmentFirstBinding
+import com.google.android.material.snackbar.Snackbar
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -35,6 +36,12 @@ class FirstFragment : Fragment() {
 
         binding.buttonFirst.setOnClickListener {
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+        }
+
+        binding.fab.setOnClickListener { view ->
+            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show()
+            findNavController().navigate(R.id.action_FirstFragment_to_mapFragment)
         }
     }
 

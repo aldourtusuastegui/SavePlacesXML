@@ -3,6 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.acsoft.saveplacesxml">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
     <application
         android:name=".PlaceApp"
         android:allowBackup="true"
@@ -14,6 +18,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SavePlacesXML"
         tools:targetApi="31">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${MAPS_API_KEY}" />
+
         <activity
             android:name=".feature_places.presentation.MainActivity"
             android:exported="true"
