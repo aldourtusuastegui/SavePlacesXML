@@ -1,4 +1,4 @@
-package com.acsoft.saveplacesxml
+package com.acsoft.saveplacesxml.ui
 
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
@@ -9,6 +9,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import com.acsoft.saveplacesxml.R
 import com.acsoft.saveplacesxml.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
