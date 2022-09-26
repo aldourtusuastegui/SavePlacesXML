@@ -13,3 +13,21 @@ Oapp/src/main/java/com/acsoft/saveplacesxml/feature_places/domain/model/Place.kt
 aapp/src/main/java/com/acsoft/saveplacesxml/feature_places/domain/use_case/GetPlacesListUseCase.kt,7\c\7c0ad86490e068bdc2738163009994701e23920b
 è
 _app/src/main/java/com/acsoft/saveplacesxml/feature_places/domain/use_case/InsertPlaceUseCase.kt,b\a\ba224104ab74b226d7cb6f6aaf73b47e938fba1b
+ä
+Zapp/src/main/java/com/acsoft/saveplacesxml/feature_places/domain/use_case/PlaceUseCases.kt,b\d\bde187b7d783d6304b09144b08efe089b14977a6
+f
+6app/src/main/java/com/acsoft/saveplacesxml/PlaceApp.kt,d\e\de729ce35d97bc26e4f4c336cbb53b352b53b2ee
+ê
+`app/src/main/java/com/acsoft/saveplacesxml/feature_places/presentation/places/PlacesViewModel.kt,e\9\e918ad8c93214927ab0b902d31e7490b742f1cf4
+j
+:app/src/main/java/com/acsoft/saveplacesxml/di/AppModule.kt,1\e\1ea70676c21aa2a6209f6bf687ebbd1ede94e342
+à
+Xapp/src/main/java/com/acsoft/saveplacesxml/feature_places/presentation/SecondFragment.kt,d\4\d441af43db6ff2b55d055fc3126449dcfef86be5
+Ü
+Vapp/src/main/java/com/acsoft/saveplacesxml/feature_places/presentation/MainActivity.kt,2\7\27cc3ff546f06445c2b454eb67cf08c34c10e250
+<
+build.gradle,f\0\f07866736216be0ee2aba49e392191aeae700a35
+P
+ app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
+@
+app/build.gradle,f\4\f4a01d6a4fcb971362ec00a83903fd3902f52164
