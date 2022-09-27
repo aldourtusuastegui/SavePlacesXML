@@ -1,16 +1,22 @@
 package com.acsoft.saveplacesxml.feature_places.presentation.add_place
 
 import android.Manifest
+import android.content.Intent
+import android.location.Location
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.acsoft.saveplacesxml.R
 import com.acsoft.saveplacesxml.databinding.FragmentMapBinding
+import com.acsoft.saveplacesxml.util.LocationUtils
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
@@ -26,20 +32,20 @@ class MapFragment : Fragment(), EasyPermissions.PermissionCallbacks {
 
     private var _binding: FragmentMapBinding? = null
     private val binding get() = _binding!!
+    private lateinit var fusedLocationProviderClient : FusedLocationProviderClient
+
+    private var latitude = 0.0
+    private var longitude = 0.0
+    private var map:GoogleMap? = null
 
     private val callback = OnMapReadyCallback { googleMap ->
-        /**
-         * Manipulates the map once available.
-         * This callback is triggered when the map is ready to be used.
-         * This is where we can add markers or lines, add listeners or move the camera.
-         * In this case, we just add a marker near Sydney, Australia.
-         * If Google Play services is not installed on the device, the user will be prompted to
-         * install it inside the SupportMapFragment. This method will only be triggered once the
-         * user has installed Google Play services and returned to the app.
-         */
-        val sydney = LatLng(-34.0, 151.0)
-        googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        map = googleMap
+        getCurrentLocation(map)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext())
     }
 
     override fun onCreateView(
@@ -93,6 +99,28 @@ class MapFragment : Fragment(), EasyPermissions.PermissionCallbacks {
     private fun requestPermissionLayoutInvisible() {
         binding.requestPermissionLayout.visibility = View.GONE
     }
+
+    private fun getCurrentLocation(googleMap: GoogleMap?) {
+        if(hasLocationPermission()) {
+           if(LocationUtils.isGpsEnabled(requireContext())) {
+               //get latitude and longitude
+               fusedLocationProviderClient.lastLocation.addOnCompleteListener { task->
+                   latitude = task.result.latitude
+                   longitude = task.result.longitude
+                   val myLocation = LatLng(latitude,longitude)
+                   googleMap?.addMarker(MarkerOptions()
+                       .position(myLocation)
+                       .title(getString(R.string.my_location)))
+                   googleMap?.moveCamera(CameraUpdateFactory.newLatLng(myLocation))
+                   binding.buttonContinue.visibility = View.VISIBLE
+               }
+           } else {
+               val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+               startActivity(intent)
+           }
+        }
+    }
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -102,12 +130,7 @@ class MapFragment : Fragment(), EasyPermissions.PermissionCallbacks {
     }
 
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
-        Toast.makeText(
-            requireContext(),
-            "Permission Granted!",
-            Toast.LENGTH_SHORT
-        ).show()
-        setViewVisibility()
+        //getCurrentLocation()
     }
 
     override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
@@ -118,8 +141,11 @@ class MapFragment : Fragment(), EasyPermissions.PermissionCallbacks {
         }
     }
 
+
+
     override fun onResume() {
         super.onResume()
         setViewVisibility()
+        getCurrentLocation(map)
     }
 }
