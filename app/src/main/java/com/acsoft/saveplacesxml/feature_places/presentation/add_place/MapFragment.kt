@@ -2,14 +2,14 @@ package com.acsoft.saveplacesxml.feature_places.presentation.add_place
 
 import android.Manifest
 import android.content.Intent
-import android.location.Location
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.acsoft.saveplacesxml.R
 import com.acsoft.saveplacesxml.databinding.FragmentMapBinding
 import com.acsoft.saveplacesxml.util.LocationUtils
@@ -65,6 +65,14 @@ class MapFragment : Fragment(), EasyPermissions.PermissionCallbacks {
         binding.requestPermissionButton.setOnClickListener {
             requestLocationPermission()
         }
+
+        binding.buttonContinue.setOnClickListener {
+            if (latitude!=0.0 && longitude!=0.0) {
+                findNavController().navigate(R.id.action_mapFragment_to_placeFormFragment)
+            } else {
+                Toast.makeText(requireContext(),"No pudimos obtener tu localización",Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun setViewVisibility() {
@@ -86,7 +94,7 @@ class MapFragment : Fragment(), EasyPermissions.PermissionCallbacks {
     private fun requestLocationPermission() {
         EasyPermissions.requestPermissions(
             this,
-            "This application cannot work without Location Permission.",
+            "esta aplicación no puede funcionar correctamente sin el permiso de localización",
             PERMISSION_LOCATION_REQUEST_CODE,
             Manifest.permission.ACCESS_FINE_LOCATION
         )
@@ -130,7 +138,7 @@ class MapFragment : Fragment(), EasyPermissions.PermissionCallbacks {
     }
 
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
-        //getCurrentLocation()
+        //empty
     }
 
     override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
@@ -140,8 +148,6 @@ class MapFragment : Fragment(), EasyPermissions.PermissionCallbacks {
             requestLocationPermission()
         }
     }
-
-
 
     override fun onResume() {
         super.onResume()

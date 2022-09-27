@@ -1,4 +1,4 @@
-package com.acsoft.saveplacesxml.feature_places.presentation
+package com.acsoft.saveplacesxml.feature_places.presentation.places
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
