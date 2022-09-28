@@ -15,8 +15,12 @@
     <string name="permission_required_rationale">Esta aplicación puede trabajar mejor con el permiso de localización, abre la pantalla de configuraciones de la aplicacion para modificar los permisos.</string>
     <string name="accept">Aceptar</string>
     <string name="cancel">Cancelar</string>
+    <string name="title">Titulo</string>
+    <string name="description">Description</string>
     <string name="my_location">Mi ubicación actual</string>
     <string name="continue_label">Continuar</string>
+    <string name="register_place">Registrar lugar</string>
+    <string name="complete_form_to_continue">Completa el formulario para continuar</string>
     <string name="enable_location_permission_title">Activar permisos de localización</string>
     <string name="enable_location_permission_message">Save Places necesita utiliza tu ubicación para registrar con más precisión el lugar</string>
     <!-- TODO: Remove or change this placeholder text -->

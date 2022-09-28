@@ -48,5 +48,11 @@
         <action
             android:id="@+id/action_placeFormFragment_to_mapFragment"
             app:destination="@id/mapFragment" />
+        <argument
+            android:name="latitude"
+            app:argType="string" />
+        <argument
+            android:name="longitude"
+            app:argType="string" />
     </fragment>
 </navigation>

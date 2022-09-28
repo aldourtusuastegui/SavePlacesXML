@@ -9,9 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
+import androidx.fragment.app.viewModels
 import com.acsoft.saveplacesxml.R
 import com.acsoft.saveplacesxml.databinding.FragmentMapBinding
+import com.acsoft.saveplacesxml.feature_places.domain.model.Place
 import com.acsoft.saveplacesxml.util.LocationUtils
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -21,9 +22,11 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import dagger.hilt.android.AndroidEntryPoint
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 
+@AndroidEntryPoint
 class MapFragment : Fragment(), EasyPermissions.PermissionCallbacks {
 
     companion object {
@@ -37,7 +40,7 @@ class MapFragment : Fragment(), EasyPermissions.PermissionCallbacks {
     private var latitude = 0.0
     private var longitude = 0.0
     private var map:GoogleMap? = null
-
+    private val addPlaceViewModel : AddPlaceViewModel by viewModels()
     private val callback = OnMapReadyCallback { googleMap ->
         map = googleMap
         getCurrentLocation(map)
@@ -67,12 +70,24 @@ class MapFragment : Fragment(), EasyPermissions.PermissionCallbacks {
         }
 
         binding.buttonContinue.setOnClickListener {
-            if (latitude!=0.0 && longitude!=0.0) {
-                findNavController().navigate(R.id.action_mapFragment_to_placeFormFragment)
+            if (validateForm()) {
+                val place = Place(
+                    title = binding.etTitle.text.toString(),
+                    description = binding.etDescription.text.toString(),
+                    latitude = latitude,
+                    longitude = longitude
+                )
+                addPlaceViewModel.registerPlace(place)
             } else {
-                Toast.makeText(requireContext(),"No pudimos obtener tu localización",Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(),getString(R.string.complete_form_to_continue),Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    private fun validateForm() : Boolean {
+        val title = binding.etTitle.text
+        val description = binding.etDescription.text
+        return (latitude!=0.0 && longitude!=0.0 && !title.isNullOrEmpty() && !description.isNullOrEmpty())
     }
 
     private fun setViewVisibility() {
@@ -113,14 +128,16 @@ class MapFragment : Fragment(), EasyPermissions.PermissionCallbacks {
            if(LocationUtils.isGpsEnabled(requireContext())) {
                //get latitude and longitude
                fusedLocationProviderClient.lastLocation.addOnCompleteListener { task->
-                   latitude = task.result.latitude
-                   longitude = task.result.longitude
-                   val myLocation = LatLng(latitude,longitude)
-                   googleMap?.addMarker(MarkerOptions()
-                       .position(myLocation)
-                       .title(getString(R.string.my_location)))
-                   googleMap?.moveCamera(CameraUpdateFactory.newLatLng(myLocation))
-                   binding.buttonContinue.visibility = View.VISIBLE
+                   if (task.result != null) {
+                       latitude = task.result.latitude
+                       longitude = task.result.longitude
+                       val myLocation = LatLng(latitude,longitude)
+                       googleMap?.addMarker(MarkerOptions()
+                           .position(myLocation)
+                           .title(getString(R.string.my_location)))
+                       googleMap?.moveCamera(CameraUpdateFactory.newLatLng(myLocation))
+                       binding.registerPlaceLayout.visibility = View.VISIBLE
+                   }
                }
            } else {
                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
