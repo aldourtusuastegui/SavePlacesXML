@@ -28,7 +28,7 @@ import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 
 @AndroidEntryPoint
-class MapFragment : Fragment(), EasyPermissions.PermissionCallbacks {
+class MapFragment : Fragment(), EasyPermissions.PermissionCallbacks,GoogleMap.OnMapLongClickListener {
 
     companion object {
         const val PERMISSION_LOCATION_REQUEST_CODE = 1
@@ -44,6 +44,7 @@ class MapFragment : Fragment(), EasyPermissions.PermissionCallbacks {
     private val addPlaceViewModel : AddPlaceViewModel by viewModels()
     private val callback = OnMapReadyCallback { googleMap ->
         map = googleMap
+        map?.setOnMapLongClickListener(this)
         getCurrentLocation(map)
     }
 
@@ -86,6 +87,11 @@ class MapFragment : Fragment(), EasyPermissions.PermissionCallbacks {
                 Toast.makeText(requireContext(),getString(R.string.complete_form_to_continue),Toast.LENGTH_SHORT).show()
             }
         }
+
+        map?.setOnMapClickListener(({
+            Toast.makeText(context,"dsfsdf",Toast.LENGTH_SHORT).show()
+
+        }))
     }
 
     private fun validateForm() : Boolean {
@@ -93,6 +99,7 @@ class MapFragment : Fragment(), EasyPermissions.PermissionCallbacks {
         val description = binding.etDescription.text
         return (latitude!=0.0 && longitude!=0.0 && !title.isNullOrEmpty() && !description.isNullOrEmpty())
     }
+
 
     private fun setViewVisibility() {
         if (hasLocationPermission()) {
@@ -174,5 +181,16 @@ class MapFragment : Fragment(), EasyPermissions.PermissionCallbacks {
         super.onResume()
         setViewVisibility()
         getCurrentLocation(map)
+    }
+
+    override fun onMapLongClick(coordinates: LatLng) {
+        latitude = coordinates.latitude
+        longitude = coordinates.longitude
+        val myLocation = LatLng(latitude,longitude)
+        map?.clear()
+        map?.addMarker(MarkerOptions()
+            .position(myLocation)
+            .title("Nuevo lugar"))
+        map?.moveCamera(CameraUpdateFactory.newLatLng(myLocation))
     }
 }
