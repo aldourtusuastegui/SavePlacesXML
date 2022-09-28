@@ -36,18 +36,12 @@
         <action
             android:id="@+id/action_mapFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
-        <action
-            android:id="@+id/action_mapFragment_to_placeFormFragment"
-            app:destination="@id/placeFormFragment" />
     </fragment>
     <fragment
         android:id="@+id/placeFormFragment"
         android:name="com.acsoft.saveplacesxml.feature_places.presentation.add_place.PlaceFormFragment"
         android:label="fragment_place_form"
         tools:layout="@layout/fragment_place_form" >
-        <action
-            android:id="@+id/action_placeFormFragment_to_mapFragment"
-            app:destination="@id/mapFragment" />
         <argument
             android:name="latitude"
             app:argType="string" />
