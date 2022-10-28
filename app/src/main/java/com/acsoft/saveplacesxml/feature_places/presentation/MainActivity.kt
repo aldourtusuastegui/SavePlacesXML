@@ -1,5 +1,6 @@
 package com.acsoft.saveplacesxml.feature_places.presentation
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -8,10 +9,9 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
-import androidx.activity.viewModels
 import com.acsoft.saveplacesxml.R
 import com.acsoft.saveplacesxml.databinding.ActivityMainBinding
-import com.acsoft.saveplacesxml.feature_places.presentation.places.PlacesViewModel
+import com.acsoft.saveplacesxml.services.PlaceService
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -19,7 +19,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
-    private val placesViewModel : PlacesViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,11 +40,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.action_settings -> true
+            R.id.action_start_service -> {
+                startService()
+                true
+            }
+            R.id.action_stop_service -> {
+                stopService()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -54,5 +57,13 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration)
                 || super.onSupportNavigateUp()
+    }
+
+    private fun startService() {
+        startService(Intent(this, PlaceService::class.java))
+    }
+
+    private fun stopService() {
+        stopService(Intent(this, PlaceService::class.java))
     }
 }
