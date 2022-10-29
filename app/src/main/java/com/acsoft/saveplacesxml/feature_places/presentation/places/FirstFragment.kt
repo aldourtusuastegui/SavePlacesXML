@@ -54,11 +54,12 @@ class FirstFragment : Fragment() {
             placesViewModel.getPlacesList().collect { placeList ->
                 placeList.let {
                     adapter.setPlaceList(placeList)
+                    placesViewModel.workManagerExample(placeList)
                 }
             }
         }
 
-        binding.fab.setOnClickListener { view ->
+        binding.fab.setOnClickListener {
             findNavController().navigate(R.id.action_FirstFragment_to_mapFragment)
         }
     }
