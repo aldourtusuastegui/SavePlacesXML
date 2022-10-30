@@ -38,8 +38,8 @@ class MapFragment : Fragment(), EasyPermissions.PermissionCallbacks,GoogleMap.On
     private val binding get() = _binding!!
     private lateinit var fusedLocationProviderClient : FusedLocationProviderClient
 
-    private var latitude = 0.0
-    private var longitude = 0.0
+    private var latitude = 25.7815513
+    private var longitude = -109.0305917
     private var map:GoogleMap? = null
     private val addPlaceViewModel : AddPlaceViewModel by viewModels()
     private val callback = OnMapReadyCallback { googleMap ->
@@ -67,6 +67,7 @@ class MapFragment : Fragment(), EasyPermissions.PermissionCallbacks,GoogleMap.On
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
         requestLocationPermission()
+        setEditTextValues()
         binding.requestPermissionButton.setOnClickListener {
             requestLocationPermission()
         }
@@ -87,11 +88,15 @@ class MapFragment : Fragment(), EasyPermissions.PermissionCallbacks,GoogleMap.On
                 Toast.makeText(requireContext(),getString(R.string.complete_form_to_continue),Toast.LENGTH_SHORT).show()
             }
         }
+    }
 
-        map?.setOnMapClickListener(({
-            Toast.makeText(context,"dsfsdf",Toast.LENGTH_SHORT).show()
-
-        }))
+    private fun setEditTextValues() {
+        if (addPlaceViewModel.getTitleArg().isNotEmpty()) {
+            binding.etTitle.setText(addPlaceViewModel.getTitleArg())
+        }
+        if(addPlaceViewModel.getDescriptionArg().isNotEmpty()) {
+            binding.etDescription.setText(addPlaceViewModel.getDescriptionArg())
+        }
     }
 
     private fun validateForm() : Boolean {

@@ -17,6 +17,9 @@
         <action
             android:id="@+id/action_FirstFragment_to_mapFragment"
             app:destination="@id/mapFragment" />
+        <deepLink
+            android:id="@+id/deepLink"
+            app:uri="http://www.places.com/home" />
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
@@ -36,6 +39,23 @@
         <action
             android:id="@+id/action_mapFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
+        <deepLink
+            android:id="@+id/deepLink2"
+            app:uri="http://www.places.com/map/{title}/{description}" />
+        <argument
+            android:name="title"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="description"
+            app:argType="string"
+            app:nullable="true" />
+        <deepLink
+            android:id="@+id/deepLink3"
+            app:uri="http://www.places.com/map" />
+        <deepLink
+            android:id="@+id/deepLink4"
+            app:uri="http://www.places.com/map/{title}" />
     </fragment>
     <fragment
         android:id="@+id/placeFormFragment"
